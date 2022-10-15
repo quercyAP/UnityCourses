@@ -1,39 +1,95 @@
 fileFormatVersion: 2
 guid: 438236b1bb4dc03468cb3f2d12fa922c
 ModelImporter:
-  serializedVersion: 23
-  fileIDToRecycleName:
-    100000: //RootNode
-    100002: Body
-    100004: BottomEyeCover
-    100006: Crown
-    100008: EyeBall
-    100010: EyeCTRL
-    100012: Head
-    100014: Side_L
-    100016: Side_R
-    100018: Slime
-    100020: Spine01
-    100022: UpperEyeCover
-    400000: //RootNode
-    400002: Body
-    400004: BottomEyeCover
-    400006: Crown
-    400008: EyeBall
-    400010: EyeCTRL
-    400012: Head
-    400014: Side_L
-    400016: Side_R
-    400018: Slime
-    400020: Spine01
-    400022: UpperEyeCover
-    4300000: Slime
-    7400000: Attack01
-    9500000: //RootNode
-    13700000: Slime
+  serializedVersion: 21300
+  internalIDToNameTable:
+  - first:
+      1: 100000
+    second: //RootNode
+  - first:
+      1: 100002
+    second: Body
+  - first:
+      1: 100004
+    second: BottomEyeCover
+  - first:
+      1: 100006
+    second: Crown
+  - first:
+      1: 100008
+    second: EyeBall
+  - first:
+      1: 100010
+    second: EyeCTRL
+  - first:
+      1: 100012
+    second: Head
+  - first:
+      1: 100014
+    second: Side_L
+  - first:
+      1: 100016
+    second: Side_R
+  - first:
+      1: 100018
+    second: Slime
+  - first:
+      1: 100020
+    second: Spine01
+  - first:
+      1: 100022
+    second: UpperEyeCover
+  - first:
+      4: 400000
+    second: //RootNode
+  - first:
+      4: 400002
+    second: Body
+  - first:
+      4: 400004
+    second: BottomEyeCover
+  - first:
+      4: 400006
+    second: Crown
+  - first:
+      4: 400008
+    second: EyeBall
+  - first:
+      4: 400010
+    second: EyeCTRL
+  - first:
+      4: 400012
+    second: Head
+  - first:
+      4: 400014
+    second: Side_L
+  - first:
+      4: 400016
+    second: Side_R
+  - first:
+      4: 400018
+    second: Slime
+  - first:
+      4: 400020
+    second: Spine01
+  - first:
+      4: 400022
+    second: UpperEyeCover
+  - first:
+      43: 4300000
+    second: Slime
+  - first:
+      74: 7400000
+    second: Attack01
+  - first:
+      95: 9500000
+    second: //RootNode
+  - first:
+      137: 13700000
+    second: Slime
   externalObjects: {}
   materials:
-    importMaterials: 0
+    materialImportMode: 0
     materialName: 0
     materialSearch: 1
     materialLocation: 0
@@ -42,6 +98,7 @@ ModelImporter:
     bakeSimulation: 0
     resampleCurves: 1
     optimizeGameObjects: 0
+    removeConstantScaleCurves: 0
     motionNodeName: 
     rigImportErrors: 
     rigImportWarnings: 
@@ -62,6 +119,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Attack01
       takeName: Take 001
+      internalID: 0
       firstFrame: 0
       lastFrame: 25
       wrapMode: 0
@@ -82,7 +140,14 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0.39917696
+        functionName: Monster_Attack
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask:
       - path: 
         weight: 1
@@ -118,25 +183,34 @@ ModelImporter:
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
     importVisibility: 0
     importBlendShapes: 1
     importCameras: 0
     importLights: 0
+    nodeNameCollisionStrategy: 0
+    fileIdsGeneration: 1
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
-    optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
+    bakeAxisConversion: 0
     preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    optimizeBones: 1
+    meshOptimizationFlags: -1
     indexFormat: 1
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 0
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
     useFileScale: 1
-    previousCalculatedGlobalScale: 0.01
-    hasPreviousCalculatedGlobalScale: 1
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
@@ -145,10 +219,10 @@ ModelImporter:
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
     blendShapeNormalImportMode: 1
     normalSmoothingSource: 0
+  referencedClips: []
   importAnimation: 1
-  copyAvatar: 0
   humanDescription:
-    serializedVersion: 2
+    serializedVersion: 3
     human: []
     skeleton: []
     armTwist: 0.5
@@ -158,13 +232,18 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
+    globalScale: 1
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 2
   humanoidOversampling: 1
+  avatarSetup: 1
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 0
+  remapMaterialsIfMaterialImportModeIsNone: 1
   additionalBone: 0
   userData: 
   assetBundleName: 

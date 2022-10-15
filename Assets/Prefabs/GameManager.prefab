@@ -1,0 +1,104 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2985724590074065841
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2985724590074065843}
+  - component: {fileID: 2985724590074065840}
+  - component: {fileID: 5633009728575583340}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2985724590074065843
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2985724590074065841}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2985724590074065840
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2985724590074065841}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c0454bed913da84288935959376bc2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Camera: {fileID: 0}
+  Player: {fileID: 0}
+  xp: 0
+  force: 10
+  def: 8
+  or: 0
+  lootSlime:
+  - {fileID: 7147230891286333949, guid: a1c4029f76e5e9844bb601fd41969db4, type: 3}
+  - {fileID: 8769214753055500421, guid: e6d9e8eb2e7f8a140863ec081dda9e04, type: 3}
+--- !u!114 &5633009728575583340
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2985724590074065841}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c61403bc5fc26a44bccb1a15a5a389a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Weapons:
+  - Type: 0
+    ID: 0
+    Prefab: {fileID: 328391956915535595, guid: e413657b6260edd449928deffbcc0e20, type: 3}
+    Cooldown: 1
+    Damages: 1
+  - Type: 0
+    ID: 1
+    Prefab: {fileID: 143310, guid: 33605be302153074a8a264ede9aeffed, type: 3}
+    Cooldown: 1
+    Damages: 1
+  - Type: 0
+    ID: 2
+    Prefab: {fileID: 102184, guid: 7c1bfe1ee115fdd469370b228144d9c5, type: 3}
+    Cooldown: 1
+    Damages: 1
+  - Type: 1
+    ID: 0
+    Prefab: {fileID: 6520102732227767910, guid: 133c762fcb88ecb46a2ee315ad331d10, type: 3}
+    Cooldown: 1
+    Damages: 1
+  - Type: 1
+    ID: 1
+    Prefab: {fileID: 101326, guid: 84cc7896a0e0ea049a89b73241cfc917, type: 3}
+    Cooldown: 1
+    Damages: 1
+  - Type: 1
+    ID: 2
+    Prefab: {fileID: 6979198253257920609, guid: 0eb05bd32cf0ef644990c8d371609a04, type: 3}
+    Cooldown: 1
+    Damages: 1
+  - Type: 0
+    ID: 3
+    Prefab: {fileID: 1875254074480235616, guid: 9e9085e4bbb2a7046b58c8c62df8516d, type: 3}
+    Cooldown: 0
+    Damages: 2
