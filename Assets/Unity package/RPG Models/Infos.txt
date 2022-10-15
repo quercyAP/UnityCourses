@@ -1,0 +1,18 @@
+Modèles 3D pour créer vos RPG ou jeux d'aventure.
+
+=======================================
+Téléchargé sur : http://unity3d-dev.com
+Créé par : Anthony Cardinale
+=======================================
+
+
+*** Apprenez à modéliser en 3D avec Blender :
+
+https://www.udemy.com/course/modelisation-environnements-3d-lowpoly-de-jeux-video-avec-blender/?referralCode=C2FB5E5948B9114CF140
+
+---
+
+*** Devenez développeur de jeux Unity3D :
+
+https://www.udemy.com/course/formation-unity-3d-creez-des-jeux-3d-avec-unity-et-csharp/?referralCode=B685709DC162B9F5DD4E
+
