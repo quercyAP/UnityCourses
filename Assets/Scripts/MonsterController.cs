@@ -14,6 +14,7 @@ public class MonsterController : MonoBehaviour
     public GameObject HitParticles;
     public GameObject DiedParticles;
     public Slider LifeBar;
+    public bool IsAlive = true;
     private NavMeshAgent agent;
     private Animator animator;
     private bool canAttack = true;
@@ -34,6 +35,8 @@ public class MonsterController : MonoBehaviour
 
     private void Update()
     {
+        if (Settings.Life <= 0)
+            IsAlive = false;
         // distance entre le monstre et le joeur
         float distance = Vector3.Distance(transform.position, SwordSoul.GameManager.Player.transform.position);
 
@@ -78,7 +81,7 @@ public class MonsterController : MonoBehaviour
         }
     }
 
-    public void TakeDamages(int damages, float knockStrength)
+    public void TakeDamages(int damages, Vector3 hitPos, float knockStrength)
     {
         // loose life
         Settings.Life -= damages;
@@ -103,8 +106,8 @@ public class MonsterController : MonoBehaviour
         {
             animator.SetTrigger("Hitted");
             // le monstre recul
-            Vector3 direction = transform.position - SwordSoul.GameManager.Player.transform.position;
-            StartCoroutine(KnockBack(direction * knockStrength, 0.5f));
+            Vector3 direction = transform.position - hitPos;
+            StartCoroutine(KnockBack(direction * knockStrength, 0.2f));
         }
     }
 

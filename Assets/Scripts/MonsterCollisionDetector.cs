@@ -6,7 +6,7 @@ using UnityEngine.Events;
 public class MonsterCollisionDetector : MonoBehaviour
 {
     public UnityEvent<MonsterController> OnCollide;
-    private HashSet<Collider> collided = new HashSet<Collider>();
+    public HashSet<Collider> Collided = new HashSet<Collider>();
     private Collider collider;
 
     private void Start()
@@ -18,33 +18,36 @@ public class MonsterCollisionDetector : MonoBehaviour
     private IEnumerator StartDetecting_Routine(float duration)
     {
         collider.enabled = true;
-        collided = new HashSet<Collider>();
+        Collided = new HashSet<Collider>();
         yield return new WaitForSeconds(duration);
         StopDetecting();
     }
 
     public void DetectCollisions(float duration)
     {
-        StartCoroutine(StartDetecting_Routine(duration));
+        if (duration > 0)
+            StartCoroutine(StartDetecting_Routine(duration));
+        else
+        {
+            collider.enabled = true;
+            Collided = new HashSet<Collider>();
+        }
     }
 
 
     public void StopDetecting()
     {
+        Collided.Clear();
         collider.enabled = false;
-        collided.Clear();
     }
 
-    private void OnTriggerStay(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
-        if (!collided.Contains(other))
+        MonsterController mc = other.GetComponent<MonsterController>();
+        if (mc != null)
         {
-            MonsterController mc = other.GetComponent<MonsterController>();
-            if (mc != null)
-            {
-                collided.Add(other);
-                OnCollide?.Invoke(mc);
-            }
-        }
+            Collided.Add(other);
+            OnCollide?.Invoke(mc);
+        }   
     }
 }

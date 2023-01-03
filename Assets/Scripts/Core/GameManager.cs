@@ -8,6 +8,8 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         SwordSoul.GameManager = this;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     // Caracteristique Perso

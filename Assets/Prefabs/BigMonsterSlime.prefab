@@ -336,7 +336,7 @@ GameObject:
   - component: {fileID: 4390273721458251271}
   m_Layer: 0
   m_Name: BigMonsterSlime
-  m_TagString: Untagged
+  m_TagString: Mob
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -373,7 +373,7 @@ MonoBehaviour:
   Emitter: {fileID: 2792337488608324831}
   AttackRadius: 0.75
   Settings:
-    DetectDistance: 15
+    DetectDistance: 50
     AttakDistance: 2.2
     AttackCooldown: 1
     Damage: 2
@@ -382,6 +382,7 @@ MonoBehaviour:
   HitParticles: {fileID: 100004, guid: b5f048a036fdb4c45b1bb74fd5e02a54, type: 3}
   DiedParticles: {fileID: 100004, guid: 750dc82ab7ed27b42adc7eb8e1fd3aee, type: 3}
   LifeBar: {fileID: 8865658548814299208}
+  IsAlive: 0
 --- !u!195 &6244329770365179098
 NavMeshAgent:
   m_ObjectHideFlags: 0

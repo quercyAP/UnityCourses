@@ -17,7 +17,6 @@ public class CharacterController : MonoBehaviour
     public float LifeBase = 10;
 
     // weapon
-    public TrailRenderer SwordTrailFX;
     public Transform SwordRootAnchor;
     public MonsterCollisionDetector SwordCollider;
     public Transform ShieldRootAnchor;
@@ -43,20 +42,29 @@ public class CharacterController : MonoBehaviour
     // Jump
     public GameObject JumpVFXPrefab;
     public MonsterCollisionDetector JumpCollider;
+    public AimDetector jumpAimDetetector;
     public float JumpSpeed = 5f;
     public float JumpCooldown = 1f;
     public float JumpMonsterKnockBack = 4f;
     private bool canJump = true;
 
+    // SwordSlash
+    public GameObject Slash;
+    public MonsterCollisionDetector SlashCollider;
+    public float SlashSpeed = 2f;
+    public float SlashDuration = 2f;
+    public float SlashMonsterKnockBack = 0f;
+    public AnimationCurve SlashSpeedCurve;
+    private bool canSlash = true;
+
     // SFX
     private AudioSource audioSource;
     public AudioClip[] swordSfx;
 
-    // Spells
-    public GameObject[] Spells;
-    public float AttackDuration = 0.33f;
-    public float AttackCooldown = 1f;
-    private bool canAttack = true;
+    // Attack
+    public AimDetector AttackAimDetector;
+    public float AimSpeed;
+    public int clickCount = 0;
     #endregion
 
     void Start()
@@ -67,7 +75,6 @@ public class CharacterController : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         canDash = true;
         State = PlayerState.Idle;
-        SwordTrailFX.enabled = false;
         SwordSoul.Events.MonsterHitPlayer += Events_MonsterHitPlayer;
         life = LifeBase;
         baseSpeed = speed;
@@ -93,6 +100,8 @@ public class CharacterController : MonoBehaviour
     void Update()
     {
         Inputs();
+        checkAnimatorState();
+        SwordComboCollision();
     }
 
     void LateUpdate()
@@ -102,20 +111,18 @@ public class CharacterController : MonoBehaviour
 
     public void BaseMouvement()
     {
-        if (State.HasFlag(PlayerState.Dashing))
-            return;
 
         // calcul du vecteur direction du mouvement
         moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
         moveDirection = transform.TransformDirection(moveDirection);
         moveDirection *= speed;
         // on applique le mouvement
-        agent.Move(moveDirection * Time.deltaTime);
         // gestion de la rotaiton du perso 
         transform.Rotate(0, Input.GetAxis("Mouse X") * rotateSpeed * Time.deltaTime, 0);
 
-        if (!State.HasFlag(PlayerState.Jumping))
+        if (!State.HasFlag(PlayerState.Jumping) && !State.HasFlag(PlayerState.Attacking))
         {
+            agent.Move(moveDirection * Time.deltaTime);
             float walkSpeed = moveDirection.magnitude;
             anim.SetFloat("walkSpeed", walkSpeed);
             // set walking state
@@ -129,19 +136,20 @@ public class CharacterController : MonoBehaviour
     public void Inputs()
     {
         // sword attack
-        if (Input.GetMouseButtonDown(0) && canAttack &&
-            !State.HasFlag(PlayerState.Attacking) &&
+        if (Input.GetMouseButtonDown(0) &&
             !State.HasFlag(PlayerState.Jumping) &&
-            !State.HasFlag(PlayerState.Dashing))
+            !State.HasFlag(PlayerState.Dashing) &&
+            !State.HasFlag(PlayerState.Slashing))
         {
-            StartCoroutine(Attack());
+            OnClick();
         }
 
         // dash
         if (Input.GetKeyDown(KeyCode.LeftShift) && canDash &&
             !State.HasFlag(PlayerState.Attacking) &&
             !State.HasFlag(PlayerState.Jumping) &&
-            !State.HasFlag(PlayerState.Dashing))
+            !State.HasFlag(PlayerState.Dashing) &&
+            !State.HasFlag(PlayerState.Slashing))
         {
             StartCoroutine(Dash());
         }
@@ -150,10 +158,50 @@ public class CharacterController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && canJump &&
             !State.HasFlag(PlayerState.Attacking) &&
             !State.HasFlag(PlayerState.Jumping) &&
-            !State.HasFlag(PlayerState.Dashing))
+            !State.HasFlag(PlayerState.Dashing) &&
+            !State.HasFlag(PlayerState.Slashing))
         {
             Jump();
         }
+        // SwordSlash
+        if (Input.GetMouseButtonDown(1) && canSlash &&
+            !State.HasFlag(PlayerState.Attacking) &&
+            !State.HasFlag(PlayerState.Jumping) &&
+            !State.HasFlag(PlayerState.Dashing) &&
+            !State.HasFlag(PlayerState.Slashing))
+        {
+            SwordSlash();
+        }
+    }
+    #endregion
+
+    #region SwordSlash
+    private void SwordSlash()
+    {
+        canSlash = false;
+        State |= PlayerState.Slashing;
+        anim.SetTrigger("SwordSlash");
+    }
+    IEnumerator SwordSlashFx()
+    {
+        GameObject SwordSlash = Instantiate(Slash);
+        SlashCollider = SwordSlash.GetComponent<MonsterCollisionDetector>();
+        SwordSlash.transform.position = transform.position;
+        SwordSlash.transform.forward = transform.forward;
+        float enlapsed = 0f;
+        while (enlapsed < SlashDuration)
+        {
+            SlashCollider.DetectCollisions(SlashDuration);
+            SwordSlash.transform.Translate(SwordSlash.transform.forward * Time.deltaTime * SlashSpeed * SlashSpeedCurve.Evaluate(enlapsed / SlashDuration), Space.World);
+            yield return null;
+            enlapsed += Time.deltaTime;
+        }
+        Destroy(SwordSlash);
+    }
+    private void SwordSlash_End()
+    {
+        State &= ~PlayerState.Slashing;
+        canSlash = true;
     }
     #endregion
 
@@ -165,8 +213,11 @@ public class CharacterController : MonoBehaviour
         canDash = false;
         float initialSpeed = speed;
         speed = speed * dashSpeedThreshold;
+        Animator animator = GetComponent<Animator>();
+        animator.speed = 2f;
         // end dash
         yield return new WaitForSeconds(DashDuration);
+        animator.speed = 1;
         speed = initialSpeed;
         State &= ~PlayerState.Dashing;
         // dash cooldown
@@ -176,19 +227,73 @@ public class CharacterController : MonoBehaviour
     #endregion
 
     #region Attack
-    IEnumerator Attack()
+    private void checkAnimatorState()
     {
-        audioSource.PlayOneShot(swordSfx[Random.Range(0, 3)]);
-        anim.SetTrigger("attack");
-        State |= PlayerState.Attacking;
-        canAttack = false;
-        SwordTrailFX.enabled = true;
-        SwordCollider.DetectCollisions(AttackDuration + AttackCooldown);
-        yield return new WaitForSeconds(AttackDuration);
-        State &= ~PlayerState.Attacking;
-        yield return new WaitForSeconds(AttackCooldown);
-        SwordTrailFX.enabled = false;
-        canAttack = true;
+        anim.SetInteger("ClickCount", clickCount);
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+        {
+            SwordCollider.StopDetecting();
+            AttackAimDetector.StopDetecting();
+            clickCount = 0;
+            State &= ~PlayerState.Attacking;
+        }
+
+        if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime > anim.GetCurrentAnimatorStateInfo(0).length / anim.GetCurrentAnimatorStateInfo(0).speed &&
+            anim.GetCurrentAnimatorStateInfo(0).IsName("hit1"))
+        {
+            anim.SetBool("hit1", false);
+        }
+        if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime > anim.GetCurrentAnimatorStateInfo(0).length / anim.GetCurrentAnimatorStateInfo(0).speed &&
+            anim.GetCurrentAnimatorStateInfo(0).IsName("hit2"))
+        {
+            anim.SetBool("hit1", false);
+            anim.SetBool("hit2", false);
+        }
+        if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime > anim.GetCurrentAnimatorStateInfo(0).length / anim.GetCurrentAnimatorStateInfo(0).speed &&
+            anim.GetCurrentAnimatorStateInfo(0).IsName("hit3"))
+        {
+            anim.SetBool("hit2", false);
+            anim.SetBool("hit3", false);
+        }
+
+    }
+    private void SwordComboCollision()
+    {
+        if (!State.HasFlag(PlayerState.Attacking) && anim.GetCurrentAnimatorStateInfo(0).IsName("hit1"))
+        {
+            SwordCollider.DetectCollisions(0);
+            AttackAimDetector.DetectEnemy(0);
+            State |= PlayerState.Attacking;
+        }
+        if (State.HasFlag(PlayerState.Attacking) && AttackAimDetector.ClosestEnemy != null)
+        {
+            var maxDistance = Vector3.Distance(transform.position, AttackAimDetector.ClosestEnemy.transform.position);
+            var targetRotation = Quaternion.LookRotation(AttackAimDetector.ClosestEnemy.transform.position - transform.position);
+            if (maxDistance > 2f)
+            {
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, (rotateSpeed / 2) * Time.deltaTime);
+                transform.position += transform.forward * AimSpeed * Time.deltaTime;
+            }
+        }
+    }
+    private void OnClick()
+    {
+        clickCount++;
+        if (clickCount == 1)
+        {
+            anim.SetBool("hit1", true);
+        }
+        clickCount = Mathf.Clamp(clickCount, 0, 3);
+        if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime < anim.GetCurrentAnimatorStateInfo(0).length / anim.GetCurrentAnimatorStateInfo(0).speed - 0.2f &&
+            clickCount >= 2)
+        {
+            anim.SetBool("hit2", true);
+        }
+        if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime < anim.GetCurrentAnimatorStateInfo(0).length / anim.GetCurrentAnimatorStateInfo(0).speed - 0.2f &&
+            clickCount >= 3)
+        {
+            anim.SetBool("hit3", true);
+        }
     }
     #endregion
 
@@ -198,27 +303,31 @@ public class CharacterController : MonoBehaviour
         speed *= 0.5f;
         anim.SetTrigger("JumpAttak");
         State |= PlayerState.Jumping;
+        jumpAimDetetector.DetectEnemy(1f);
         canJump = false;
     }
-
     IEnumerator Jump_Start()
     {
         speed = baseSpeed * 0.75f;
         while (State.HasFlag(PlayerState.Jumping))
         {
+            if (jumpAimDetetector.ClosestEnemy != null)
+            {
+                var maxDistance = Vector3.Distance(transform.position, jumpAimDetetector.ClosestEnemy.transform.position);
+                var targetRotation = Quaternion.LookRotation(jumpAimDetetector.ClosestEnemy.transform.position - transform.position);
+                if (maxDistance > 2f && targetRotation.eulerAngles.y > 75f)
+                    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotateSpeed * Time.deltaTime);
+            }
             transform.position += transform.forward * JumpSpeed * Time.deltaTime;
             yield return null;
         }
     }
-
     IEnumerator Jump_Grounded()
     {
         State &= ~PlayerState.Jumping;
-
         GameObject vfx = Instantiate(JumpVFXPrefab);
         vfx.transform.position = transform.position;
         SwordSoul.GameManager.Camera.DOShakeRotation(0.18f, 8, 5, 8);
-
         JumpCollider.DetectCollisions(0.25f);
         speed = 0f;
         float enlapsed = 0f;
@@ -237,14 +346,17 @@ public class CharacterController : MonoBehaviour
     #region Dammages
     public void DoAttackDamage(MonsterController monster)
     {
-        Debug.Log("Sword attack");
-        monster.TakeDamages(EquipedWeapon.Damages, SwordAttackMonsterKnockBack);
+        monster.TakeDamages(EquipedWeapon.Damages, transform.position, SwordAttackMonsterKnockBack);
     }
 
     public void DoJumpDammage(MonsterController monster)
     {
-        Debug.Log("Jump attack");
-        monster.TakeDamages(1, JumpMonsterKnockBack);
+        monster.TakeDamages(1, transform.position, JumpMonsterKnockBack);
+    }
+
+    public void DoSlashDammage(MonsterController monster)
+    {
+        monster.TakeDamages(2, monster.transform.position, SlashMonsterKnockBack);
     }
     #endregion
 
@@ -309,5 +421,6 @@ public enum PlayerState
     Moving = 1,
     Attacking = 2,
     Dashing = 4,
-    Jumping = 8
+    Jumping = 8,
+    Slashing = 16
 }
