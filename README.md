@@ -10,7 +10,7 @@ Ce dépôt contient tous les projets, et codes source que j'ai réalisés et pri
 ## À propos de la formation
 
 Cette formation Udemy couvre les fondamentaux de la programmation en C# dans le contexte du développement de jeux avec Unity. J'ai ajouter quelques shaders, permettant de créer des effets visuels pour les attaques.
-Il y aussi une deuxieme scene que j'ai commencé a realiser avec quellque asset que j'ai fait avec blender. 
+Il y aussi une deuxieme scene que j'ai commencé a realiser avec quelques asset que j'ai fait avec blender. 
 
 ### Ce que vous trouverez dans ce dépôt
 
