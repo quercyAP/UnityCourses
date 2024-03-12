@@ -25,7 +25,7 @@ Pour explorer les projets, clonez ce dépôt sur votre machine locale en utilisa
 ```bash
 git clone https://github.com/votre_nom_utilisateur/votre_repo_formation_csharp_unity.git
 ```
-Il ya deux scenes, une jouable `Jeu_Niveau1` et une seconde `Cube_World` qui le resultat de ce que j'ai realiser avec Blender.
+Il ya deux scenes, une jouable `Jeu_Niveau1` et une seconde `Cube_World` qui est le resultat de ce que j'ai realiser avec Blender.
 
 ## Prérequis
 Unity, de préférence la version utilisée dans la formation ou une version ultérieure.
