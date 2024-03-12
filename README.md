@@ -25,3 +25,14 @@ Il ya deux scenes, une jouable `Jeu_Niveau1` et une seconde `Cube_World` qui le 
 ## Prérequis
 Unity, de préférence la version utilisée dans la formation ou une version ultérieure.
 Connaissance de base en programmation C# est recommandée pour suivre aisément les exemples de code.
+
+## Contrôles
+
+Le jeu intègre un système de contrôle intuitif permettant une expérience de jeu fluide et réactive :
+
+- **Déplacement** : Utilisez les touches `ZQSD` pour vous déplacer dans l'environnement de jeu.
+- **Saut** : Appuyez sur la touche `Espace` pour sauter. Le saut intègre une assistance de visée (`aim assist`) qui cible automatiquement le monstre le plus proche.
+- **Dash** : Maintenez la touche `Shift` pour activer un dash rapide, permettant d'esquiver les attaques ou de vous déplacer rapidement sur de courtes distances.
+- **Attaque de base** : Un clic gauche déclenche une attaque de base. Cliquez deux fois pour lancer un combo, et trois fois pour une suite plus puissante. Le quatrième clic réalise une attaque lourde spéciale.
+- **Attaque spéciale** : Un clic droit effectue directement l'attaque lourde spéciale sans nécessiter de combo préalable.
+
