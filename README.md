@@ -10,11 +10,11 @@ Ce dépôt contient tous les projets, et codes source que j'ai réalisés et pri
 ## À propos de la formation
 
 Cette formation Udemy couvre les fondamentaux de la programmation en C# dans le contexte du développement de jeux avec Unity. J'ai ajouter quelques shaders, permettant de créer des effets visuels pour les attaques.
-Il y aussi une deuxieme que j'ai commencé a realiser avec quellque asset que j'ai fait avec blender. 
+Il y aussi une deuxieme scene que j'ai commencé a realiser avec quellque asset que j'ai fait avec blender. 
 
 ### Ce que vous trouverez dans ce dépôt
 
-- **Projets Unity** : Des exemples complets de jeux et de démos interactives développés au cours de la formation.
+- **Projets Unity** : Une scenes développés au cours de la formation et une autre realiser plus tard.
 - **Scripts C#** : Les scripts utilisés pour animer et contrôler les comportements dans les projets Unity.
 - **Shaders** : Une collection de shaders personnalisés créés pour explorer différents effets visuels.
 
@@ -33,7 +33,7 @@ Connaissance de base en programmation C# est recommandée pour suivre aisément 
 
 ## Contrôles
 
-Le jeu intègre un système de contrôle intuitif permettant une expérience de jeu fluide et réactive :
+Le jeu intègre un système de contrôle :
 
 - **Déplacement** : Utilisez les touches `ZQSD` pour vous déplacer dans l'environnement de jeu.
 - **Saut** : Appuyez sur la touche `Espace` pour sauter. Le saut intègre une assistance de visée (`aim assist`) qui cible automatiquement le monstre le plus proche.
