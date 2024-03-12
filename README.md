@@ -29,7 +29,6 @@ Il ya deux scenes, une jouable `Jeu_Niveau1` et une seconde `Cube_World` qui est
 
 ## Prérequis
 Unity, de préférence la version utilisée dans la formation ou une version ultérieure.
-Connaissance de base en programmation C# est recommandée pour suivre aisément les exemples de code.
 
 ## Contrôles
 
