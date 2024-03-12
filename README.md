@@ -1,4 +1,4 @@
-# Formation C# et Unity avec Focus sur les Shaders
+# Formation C# et Unity
 
 <div>
   <img src="screenshot/SpecialAttack.png" width="400" height="200">
